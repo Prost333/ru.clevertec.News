@@ -15,14 +15,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-  app:
+  appNews:
     build:
       context: "C:\\Users\\dimab\\ru.clevertec.ManagementNews"
       dockerfile: Dockerfile
     ports:
       - 8080:8080
     depends_on:
-      db:
+      db1:
         condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db1:5432/news

@@ -5,4 +5,5 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../spring-boot-exeption-starter/build/generated/sources/annotationProcessor/java/test" isTestSource="true" generated="true" />
     </content>
   </component>
+  <component name="TestModuleProperties" production-module="ru.clevertec.ManagementNews.spring-boot-exeption-starter.main" />
 </module>

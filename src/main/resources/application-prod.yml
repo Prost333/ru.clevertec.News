@@ -1,15 +1,20 @@
+server:
+  port: 8080
 spring:
   datasource:
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/
+    url: jdbc:postgresql://localhost:5432/news
     username: postgres
     password: sa
     poolSize: 10
   cache:
     capacity: 10
-    algorithm: LRUCache
+    algorithm: Redis
+  redis:
+    host: localhost
+    port: 6379
   liquibase:
-    change-log:
+    change-log: classpath:db/db.changelog-master.yml
     enabled: true
   hibernate:
     ddl-auto: validate
@@ -26,3 +31,6 @@ logging:
 exception:
   handler:
     enabled: true
+jwt:
+  secret: c92cef2481ba7a58dc63485105e6c0bc289670ba31108ff8cdf6402ae92dc84e
+  expiration-time: 3600000

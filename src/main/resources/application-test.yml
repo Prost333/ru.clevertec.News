@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/news
+    url: jdbc:postgresql://localhost:5433/news
     username: postgres
     password: sa
     poolSize: 10

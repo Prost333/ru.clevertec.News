@@ -9,7 +9,7 @@ spring:
     poolSize: 10
   cache:
     capacity: 10
-    algorithm: Redis
+    algorithm: LRUCache
   redis:
     host: redis
     port: 6379

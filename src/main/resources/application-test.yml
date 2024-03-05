@@ -11,7 +11,7 @@ spring:
     capacity: 10
     algorithm: Redis
   redis:
-    host: localhost
+    host: redis
     port: 6379
   liquibase:
     change-log: classpath:db/db.changelog-master.yml

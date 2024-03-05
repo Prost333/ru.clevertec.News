@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: sa
       POSTGRES_DB: news
     ports:
-      - 5433:5432 # Исправлено здесь
+      - 5433:5432
     networks:
       - mynetwork
     healthcheck:
@@ -26,12 +26,18 @@ services:
       db1:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db1:5432/news # Исправлено здесь
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db1:5432/news
       POSTGRES_HOST: db1
-      POSTGRES_PORT: 5432 # Исправлено здесь
+      POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: sa
       POSTGRES_DB: news
+    networks:
+      - mynetwork
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
     networks:
       - mynetwork
 networks:

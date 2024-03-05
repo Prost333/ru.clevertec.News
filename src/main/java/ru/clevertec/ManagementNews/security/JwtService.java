@@ -4,10 +4,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ru.clevertec.ManagementNews.multiFeign.user.User;
 
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,87 +26,93 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String secret;
 
-    /**
-     * Extracts the username from the JWT token.
-     *
-     * @param token The JWT token.
-     * @return The extracted username.
-     */
-    public String extractUsername(String token) {
+    @Value("${jwt.expiration-time}")
+    private int expirationTime;
+
+
+    public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    /**
-     * Extracts the expiration date from the JWT token.
-     *
-     * @param token The JWT token.
-     * @return The expiration date.
-     */
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        if (userDetails instanceof User customUserDetails) {
+            claims.put("username", customUserDetails.getUsername());
+            claims.put("password", customUserDetails.getPassword());
+            claims.put("role", customUserDetails.getRole());
+        }
+        return generateToken(claims, userDetails);
+    }
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String userName = extractUserName(token);
+        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
     /**
-     * Extracts a claim from the JWT token.
+     * Извлечение данных из токена
      *
-     * @param token          The JWT token.
-     * @param claimsResolver The resolver function to extract the claim.
-     * @param <T>            The type of the claim.
-     * @return The extracted claim.
+     * @param token           токен
+     * @param claimsResolvers функция извлечения данных
+     * @param <T>             тип данных
+     * @return данные
      */
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+        return claimsResolvers.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    /**
+     * Генерация токена
+     *
+     * @param extraClaims дополнительные данные
+     * @param userDetails данные пользователя
+     * @return токен
+     */
+    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
-    private Boolean isTokenExpired(String token) {
+    /**
+     * Проверка токена на просроченность
+     *
+     * @param token токен
+     * @return true, если токен просрочен
+     */
+    private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
     /**
-     * Generates a JWT token for the specified user details.
+     * Извлечение даты истечения токена
      *
-     * @param userDetails The user details.
-     * @return The generated JWT token.
+     * @param token токен
+     * @return дата истечения
      */
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
-    }
-
-    private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, secret).compact();
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 
     /**
-     * Validates the JWT token for the specified user details.
+     * Извлечение всех данных из токена
      *
-     * @param token       The JWT token to validate.
-     * @param userDetails The user details.
-     * @return True if the token is valid, false otherwise.
+     * @param token токен
+     * @return данные
      */
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
     }
 
     /**
-     * Parses and retrieves the claims from the JWT token.
+     * Получение ключа для подписи токена
      *
-     * @param token The JWT token.
-     * @return The parsed claims.
+     * @return ключ
      */
-    public Claims parseClaims(String token) {
-        Jws<Claims> jws = Jwts.parserBuilder()
-                .setSigningKey(secret.getBytes())
-                .build()
-                .parseClaimsJws(token);
-        return jws.getBody();
+    private Key getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

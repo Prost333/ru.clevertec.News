@@ -15,6 +15,7 @@ class JwtServiceTest {
         JwtService jwtService = new JwtService();
         UserDetails userDetails = mock(UserDetails.class);
         ReflectionTestUtils.setField(jwtService, "secret", key);
+        ReflectionTestUtils.setField(jwtService, "expirationTime", 3600000);
 
         String token = jwtService.generateToken(userDetails);
 
@@ -27,9 +28,10 @@ class JwtServiceTest {
         UserDetails userDetails = mock(UserDetails.class);
         when(userDetails.getUsername()).thenReturn("testUser");
         ReflectionTestUtils.setField(jwtService, "secret", key);
+        ReflectionTestUtils.setField(jwtService, "expirationTime", 3600000);
 
         String token = jwtService.generateToken(userDetails);
-        String username = jwtService.extractUsername(token);
+        String username = jwtService.extractUserName(token);
 
         assertEquals("testUser", username);
     }
@@ -40,10 +42,10 @@ class JwtServiceTest {
         UserDetails userDetails = mock(UserDetails.class);
         when(userDetails.getUsername()).thenReturn("testUser");
         ReflectionTestUtils.setField(jwtService, "secret", key);
-
+        ReflectionTestUtils.setField(jwtService, "expirationTime", 3600000);
 
         String token = jwtService.generateToken(userDetails);
-        boolean isValid = jwtService.validateToken(token, userDetails);
+        boolean isValid = jwtService.isTokenValid(token, userDetails);
 
         assertTrue(isValid);
     }

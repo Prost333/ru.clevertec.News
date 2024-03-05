@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  db:
+  db1:
     image: postgres:13-alpine
     environment:
       POSTGRES_USER: postgres
@@ -25,8 +25,8 @@ services:
       db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/news
-      POSTGRES_HOST: db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db1:5432/news
+      POSTGRES_HOST: db1
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: sa

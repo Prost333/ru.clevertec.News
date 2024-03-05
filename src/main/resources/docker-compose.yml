@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   db:
-    image: postgres:13
+    image: postgres:13-alpine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: sa
@@ -18,14 +18,14 @@ services:
       context: "C:\\Users\\dimab\\ru.clevertec.ManagementNews"
       dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - 8081:8081
     depends_on:
       db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/news  # Используйте порт 5432
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/news
       POSTGRES_HOST: db
-      POSTGRES_PORT: 5432  # Используйте порт 5432
+      POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: sa
       POSTGRES_DB: news

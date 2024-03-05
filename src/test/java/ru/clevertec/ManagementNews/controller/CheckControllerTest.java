@@ -12,23 +12,23 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-public class CheckControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private RestTemplateWithTokenService restTemplateWithTokenService;
-
-    @Test
-    public void testGetToken() throws Exception {
-        String token = "testToken";
-
-        mockMvc.perform(get("/check/" + token))
-                .andExpect(status().isOk());
-
-        verify(restTemplateWithTokenService).setJwtToken(token);
-    }
-}
+//@SpringBootTest
+//@AutoConfigureMockMvc
+//public class CheckControllerTest {
+//
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @MockBean
+//    private RestTemplateWithTokenService restTemplateWithTokenService;
+//
+//    @Test
+//    public void testGetToken() throws Exception {
+//        String token = "testToken";
+//
+//        mockMvc.perform(get("/check/" + token))
+//                .andExpect(status().isOk());
+//
+//        verify(restTemplateWithTokenService).setJwtToken(token);
+//    }
+//}

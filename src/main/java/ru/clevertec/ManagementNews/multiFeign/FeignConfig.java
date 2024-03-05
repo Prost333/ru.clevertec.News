@@ -14,12 +14,4 @@ public class FeignConfig {
     private UserClient userClient;
 
 
-//    @Bean
-//    public RequestInterceptor requestInterceptor() {
-//        return requestTemplate -> {
-//            String responseBody = userClient.getDto();
-//            System.out.println("Authorization Token: Bearer " + responseBody);
-//            requestTemplate.header("Authorization", "Bearer " + responseBody);
-//        };
-//    }
 }

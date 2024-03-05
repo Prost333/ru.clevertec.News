@@ -9,7 +9,7 @@ import ru.clevertec.ManagementNews.multiFeign.FeignConfig;
 
 import java.util.List;
 
-@FeignClient(name = "comment-service", url = "localhost:8082", configuration = FeignConfig.class)
+@FeignClient(name = "comment-service", url = "http://appb:8082", configuration = FeignConfig.class)
 public interface CommentFeign {
 
     @GetMapping("/comments/news/{newsId}")

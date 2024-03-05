@@ -23,9 +23,9 @@ services:
       db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/news
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/news  # Используйте порт 5432
       POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
+      POSTGRES_PORT: 5432  # Используйте порт 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: sa
       POSTGRES_DB: news

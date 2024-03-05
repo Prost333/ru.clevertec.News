@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dimab.ru.clevertec.ManagementNews.main.iml" filepath="$PROJECT_DIR$/.idea/modules/dimab.ru.clevertec.ManagementNews.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-boot-aop-starter/dimab.ru.clevertec.ManagementNews.spring-boot-aop-starter.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-boot-aop-starter/dimab.ru.clevertec.ManagementNews.spring-boot-aop-starter.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-boot-aop-starter/dimab.ru.clevertec.ManagementNews.spring-boot-aop-starter.test.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-boot-aop-starter/dimab.ru.clevertec.ManagementNews.spring-boot-aop-starter.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-boot-exeption-starter/dimab.ru.clevertec.ManagementNews.spring-boot-exeption-starter.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-boot-exeption-starter/dimab.ru.clevertec.ManagementNews.spring-boot-exeption-starter.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-boot-exeption-starter/dimab.ru.clevertec.ManagementNews.spring-boot-exeption-starter.test.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-boot-exeption-starter/dimab.ru.clevertec.ManagementNews.spring-boot-exeption-starter.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ru.clevertec.ManagementNews.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ru.clevertec.ManagementNews.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-boot-aop-starter/ru.clevertec.ManagementNews.spring-boot-aop-starter.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-boot-aop-starter/ru.clevertec.ManagementNews.spring-boot-aop-starter.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-boot-aop-starter/ru.clevertec.ManagementNews.spring-boot-aop-starter.test.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-boot-aop-starter/ru.clevertec.ManagementNews.spring-boot-aop-starter.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-boot-exeption-starter/ru.clevertec.ManagementNews.spring-boot-exeption-starter.main.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-boot-exeption-starter/ru.clevertec.ManagementNews.spring-boot-exeption-starter.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spring-boot-exeption-starter/ru.clevertec.ManagementNews.spring-boot-exeption-starter.test.iml" filepath="$PROJECT_DIR$/.idea/modules/spring-boot-exeption-starter/ru.clevertec.ManagementNews.spring-boot-exeption-starter.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ru.clevertec.ManagementNews.test.iml" filepath="$PROJECT_DIR$/.idea/modules/ru.clevertec.ManagementNews.test.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - include:
+      file: db/v0.0/ddl/createNews.sql
+  - include:
+      file: db/v0.0/ddl/createComments.sql
+  - changeSet:
+      id: create_triggers
+      author: yourName
+      changes:
+        - sqlFile:
+            path: db/v0.0/ddl/create_trigger.sql
+            splitStatements: false
+            stripComments: true
+  - include:
+      file: db/v0.0/dml/insertNews.sql
+  - include:
+      file: db/v0.0/dml/insertComments.sql
+
+

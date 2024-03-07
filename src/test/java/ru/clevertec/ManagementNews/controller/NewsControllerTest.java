@@ -1,7 +1,6 @@
 package ru.clevertec.ManagementNews.controller;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +8,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,10 +15,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import ru.clevertec.ManagementNews.dto.ResponsePage;
-import ru.clevertec.ManagementNews.dto.news.NewsReq;
 import ru.clevertec.ManagementNews.dto.news.NewsResp;
 import ru.clevertec.ManagementNews.enums.Role;
 import ru.clevertec.ManagementNews.multiFeign.user.User;
@@ -36,7 +32,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,21 +67,6 @@ public class NewsControllerTest {
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
-
-//    @Test
-//    public void testSave() throws Exception {
-//        authenticateAsJournalist();
-//        NewsResp newsResp = new NewsResp();
-//        when(newsService.save(any(NewsReq.class))).thenReturn(newsResp);
-//
-//        mockMvc.perform(post("/news")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(new ObjectMapper().writeValueAsString(new NewsReq())))
-//                .andExpect(status().isOk())
-//                .andExpect(content().json(new ObjectMapper().writeValueAsString(newsResp)));
-//
-//        verify(newsService, times(1)).save(any(NewsReq.class));
-//    }
 
     @Test
     public void testFindById() throws Exception {

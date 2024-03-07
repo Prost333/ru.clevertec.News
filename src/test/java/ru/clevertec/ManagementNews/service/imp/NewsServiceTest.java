@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.netflix.ribbon.StaticServerList;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +32,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.netflix.loadbalancer.Server;
 import com.netflix.loadbalancer.ServerList;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,8 +41,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.clevertec.ManagementNews.dao.NewsDao;
-import ru.clevertec.ManagementNews.dto.comment.CommentResp;
 import ru.clevertec.ManagementNews.dto.news.NewsMapper;
 import ru.clevertec.ManagementNews.dto.news.NewsReq;
 import ru.clevertec.ManagementNews.dto.news.NewsResp;
@@ -45,11 +51,10 @@ import ru.clevertec.ManagementNews.entity.News;
 import ru.clevertec.ManagementNews.enums.Role;
 import ru.clevertec.ManagementNews.exeption.EntityNotFoundException;
 import ru.clevertec.ManagementNews.multiFeign.user.User;
+import ru.clevertec.ManagementNews.multiFeign.user.UserClient;
+import ru.clevertec.ManagementNews.security.JwtService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -64,13 +69,17 @@ public class NewsServiceTest {
     @Mock
     private NewsMapper newsMapper;
 
-
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
     private WireMockServer wm;
+    @MockBean
+    private UserClient userClient;
+    @MockBean
+    private JwtService jwtService;
+
 
     @Before
     public void setUp() {
@@ -88,8 +97,10 @@ public class NewsServiceTest {
         authorities.add(new SimpleGrantedAuthority(Role.ADMIN.name()));
         User user = User.builder().role(Role.ADMIN).password("admin123").username("admin").build();
         UserDetails userDetails = user;
+        String token = jwtService.generateToken(userDetails);
         Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(auth);
+        when(userClient.getDto()).thenReturn(token);
     }
 
     @Test
@@ -107,24 +118,25 @@ public class NewsServiceTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(objectMapper.writeValueAsString(newsResp))));
 
-//        mockMvc.perform(MockMvcRequestBuilders.get("/comments/news/" + id)
-//                        .header(HttpHeaders.AUTHORIZATION, "Basic " + Base64.getEncoder().encodeToString(("admin:admin123").getBytes(UTF_8)))
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().is(401));
+        mockMvc.perform(MockMvcRequestBuilders.get("/comments/news/" + id)
+                        .header(HttpHeaders.AUTHORIZATION, "Basic " + Base64.getEncoder().encodeToString(("admin:admin123")
+                                .getBytes(UTF_8)))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(401));
 
     }
 
-//    @Configuration
-//    public static class TestConfiguration {
-//        @Bean
-//        public ServerList<Server> ribbonServerList() {
-//            return new StaticServerList<>(new Server("localhost", 8888));
-//        }
-//        @Bean
-//        public ObjectMapper objectMapper() {
-//            return new ObjectMapper();
-//        }
-//    }
+    @Configuration
+    public static class TestConfiguration {
+        @Bean
+        public ServerList<Server> ribbonServerList() {
+            return new StaticServerList<>(new Server("localhost", 8888));
+        }
+        @Bean
+        public ObjectMapper objectMapper() {
+            return new ObjectMapper();
+        }
+    }
 
     @Test
     public void testSave() {

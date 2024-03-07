@@ -1,4 +1,4 @@
-package ru.clevertec.ManagementNews.multiFeign;
+package ru.clevertec.ManagementNews.config;
 
 import feign.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,4 @@ import ru.clevertec.ManagementNews.multiFeign.user.UserClient;
 public class FeignConfig {
     @Autowired
     private UserClient userClient;
-
-
 }

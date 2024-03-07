@@ -1,0 +1,4 @@
+rootProject.name = 'ru.clevertec.ManagementNews'
+include 'spring-boot-aop-starter'
+include 'spring-boot-exeption-starter'
+

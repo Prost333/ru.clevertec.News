@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  db1:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sa
+      POSTGRES_DB: news
+    ports:
+      - 5433:5432
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  appnews:
+    build:
+      context: "C:\\Users\\dimab\\ru.clevertec.ManagementNews"
+      dockerfile: Dockerfile
+    container_name: container_name
+    ports:
+      - 8080:8080
+    depends_on:
+      db1:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db1:5432/news
+      POSTGRES_HOST: db1
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sa
+      POSTGRES_DB: news
+    networks:
+      - mynetwork
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    networks:
+      - mynetwork
+networks:
+  mynetwork:
+    driver: bridge

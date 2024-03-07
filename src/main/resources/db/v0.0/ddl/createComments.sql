@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS comments (
+    id BIGSERIAL PRIMARY KEY NOT NULL,
+    time TIMESTAMP NOT NULL,
+    text TEXT NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    news_id BIGINT NOT NULL,
+    FOREIGN KEY (news_id) REFERENCES news (id)
+);

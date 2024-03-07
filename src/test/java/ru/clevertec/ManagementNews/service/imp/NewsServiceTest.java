@@ -77,8 +77,21 @@ public class NewsServiceTest {
     private WireMockServer wm;
     @MockBean
     private UserClient userClient;
-    @MockBean
+    @Autowired
     private JwtService jwtService;
+    @Configuration
+    public static class TestConfiguration {
+        @Bean
+        public ServerList<Server> ribbonServerList() {
+            return new StaticServerList<>(new Server("localhost", 8888));
+        }
+        @Bean
+        public ObjectMapper objectMapper() {
+            return new ObjectMapper();
+        }
+        @Bean
+        public  JwtService jwtService(){return  new JwtService();}
+    }
 
 
     @Before
@@ -104,7 +117,7 @@ public class NewsServiceTest {
     }
 
     @Test
-    public void testFindByIdandComment() throws Exception {
+    public void testFindByIdAndComment() throws Exception {
         authenticateAsAdmin();
         Long id = 1L;
         NewsResp newsResp = new NewsResp();
@@ -126,17 +139,6 @@ public class NewsServiceTest {
 
     }
 
-    @Configuration
-    public static class TestConfiguration {
-        @Bean
-        public ServerList<Server> ribbonServerList() {
-            return new StaticServerList<>(new Server("localhost", 8888));
-        }
-        @Bean
-        public ObjectMapper objectMapper() {
-            return new ObjectMapper();
-        }
-    }
 
     @Test
     public void testSave() {
